@@ -1,0 +1,197 @@
+three classes (byte_int, compree, decompress)
+
+compress class
+1{
+
+private
+2{
+
+return_char
+
+processes a string bits and extracts its first 8 characters,
+returning them as a new string while updating bits to contain the remaining characters.
+
+
+
+Initialization:
+res is initialized to an empty string to store the first 8 characters.
+newbits is initialized to an empty string to store the remaining characters.
+
+Loop:
+The loop iterates over each character in the string bits.
+For the first 8 characters (indices 0 to 7), it appends each character to res.
+For the remaining characters (indices 8 and beyond), it appends each character to newbits.
+
+Update:
+After the loop, bits is updated to newbits, effectively removing the first 8 characters from bits.
+
+Return:
+The function returns the string res, which contains the first 8 characters of the original bits.
+
+Example:
+If bits is “abcdefghijk”, after calling return_char(bits), the function will return “abcdefgh” 
+and bits will be updated to “ijk”.
+...................................
+
+fillwith_bits
+
+pads a string x with zeros until its length is 8 characters.
+It also updates the reference variable number to indicate how many zeros were added.
+
+
+Calculate Padding:
+number is set to 7 - x.size(), which calculates how many zeros
+are needed to make the length of x equal to 8.
+
+Loop:
+A for loop runs from 0 to number(inclusive),
+appending ‘0’ to x in each iteration.
+
+Return:
+The function returns the padded string x.
+Example:
+If x is “101” (length 3), number will be set to 4,
+and the function will append four '0’s to x, resulting in “10100000”.
+
+This function ensures that the string x always has a length of 8
+by adding the necessary number of zeros at the end.
+
+}2
+
+public
+3{
+
+step1
+
+reads a binary file and counts the frequency of each character, storing the results in a map.
+
+A fstream object file is created.
+The file specified by name is opened in input (ios::in) and binary (ios::binary) mode.
+
+Map Initialization:
+A map<char, int> named iter is initialized to store character frequencies.
+
+Reading and Counting:
+A char variable temp is used to read characters from the file.
+The while loop reads each character from the file using file.get(temp).
+For each character read, the corresponding count in the map is incremented (iter[temp]++).
+
+Closing the File:
+The file is closed using file.close().
+
+Return:
+The function returns the map containing the frequency of each character.
+
+Example:
+If the file contains the text “hello”,
+ the resulting map will have entries like {'h': 1, 'e': 1, 'l': 2, 'o': 1}.
+............................................................................
+
+step2
+
+generates Huffman codes for characters based on their frequencies and writes these codes to a binary file.
+
+Initialization:
+Converts the map<char, int> iter_mapp to a vector<pair<char, int>> named x.
+Sorts x in descending order of frequencies using the hufftree comparator.
+
+File Handling:
+Appends “.huff” to the name and opens an output file stream huff in binary mode.
+
+Huffman Code Generation:
+
+it put 1 then
+01 ---->
+001
+that is the sequence of the huffman tree 
+and the last code is only zeros
+the format is char ---> huffcode ----------> '\'
+
+Closing the File:
+Closes the file stream huff.
+
+Return:
+Returns the huffmancode vector containing pairs of characters and their corresponding Huffman codes.
+
+Example:
+If iter_mapp contains character frequencies like {'a': 5, 'b': 2, 'c': 1},
+the function will generate Huffman codes for these characters, write
+them to a file named name.huff, and return 
+a vector of pairs with characters and their Huffman codes.(a, 1)(b , 01)(c, 000)
+size went from 5 + 2 + 1 = 8 (the number of bytes) to 12 bits with 4 bits padding = 2 bytes
+............................................................
+
+step3
+
+compresses a file using Huffman coding and writes the compressed data to a new binary file.
+
+File Handling:
+Opens a new binary file stream newfile with the name new_name + ".comp" for output.
+Converts the vector<pair<char, string>> code to a map<char, string> code_map for quick lookup
+of Huffman codes.
+
+
+Initialization:
+
+byte_int change; is a utility for converting between binary strings and integers.
+
+char temp; is used to read characters from the input file.
+
+int num_of_trash; will store the number of padding bits added to the last byte.
+
+string bits = ""; accumulates the Huffman-encoded bits.
+
+bool gate = true; and bool gate2 = true; control the flow of the loop.
+
+
+loop:
+
+The loop reads characters from the input file and appends their Huffman codes to bits.
+
+If bits has at least 8 bits, it extracts the first 8 bits,
+converts them to a byte, and writes the byte to newfile.
+
+When the end of the file is reached (gate becomes false), it
+stops appending new bits but continues processing the remaining bits.
+
+If bits has fewer than 8 bits at the end, it pads
+bits with zeros using fillwith_bits and writes the final byte to newfile.
+
+
+Closing the File:
+
+Closes the output file stream newfile.
+
+Output:
+The function writes the compressed data to newfile and prints the number of padding bits added.
+...............................................................................................
+
+the_operation
+
+orchestrates the process of compressing a file using Huffman coding.
+
+
+Step 1: Frequency Calculation:
+Calls step1(name_of_file) to read the file and create a map<char, int> iter that
+contains the frequency of each character in the file.
+
+User Input:
+Prompts the user to enter the names for the assistant file (huff_name) and the result file (new_name).
+
+
+Step 2: Huffman Code Generation:
+
+Calls step2(iter, huff_name) to generate Huffman codes for eac
+h character based on their frequencies. This function
+returns a vector<pair<char, string>> tree containing the characters
+and their corresponding Huffman codes.
+
+Step 3: File Compression:
+Calls step3(tree, fstream(name_of_file, ios::in | ios::binary), new_name) to compress
+the original file using the generated Huffman codes. This function reads
+the original file, encodes its contents using the Huffman codes, and writes the compressed
+data to a new file named new_name + ".comp".
+
+}3
+
+}1

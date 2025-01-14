@@ -1,0 +1,92 @@
+three classes (byte_int, compree, decompress)
+
+byte_int class
+1{
+
+private
+2{
+
+pew pew : This function i used the Cache concept, pewpew takes a short integer x as input
+and returns (2^x) for values of x ranging from 0 to 7. It uses a switch
+statement to directly return the precomputed power of 2 for each case,making the time complexity (O(1))
+due to the constant-time lookup.
+...................................
+reverse : takes a reference to a string x and reverses its first 9 characters
+ (indices 0 to 8).
+
+Initialization:
+i is initialized to -1.
+j is initialized to 8.
+Loop: The while loop continues until i + 1 equals j.
+In each iteration:
+i is incremented.
+j is decremented.
+The characters at positions i and j are swapped using arithmetic operations:
+x[i] += x[j]; adds the ASCII values of x[i] and x[j] and stores the result in x[i].
+x[j] = x[i] - x[j]; calculates the original value of x[i] and assigns it to x[j].
+x[i] -= x[j]; calculates the original value of x[j] and assigns it to x[i].
+This method effectively swaps the characters without using a temporary variable.
+The loop ensures that the first 9 characters of the string are reversed.
+
+}2
+
+public
+3{
+
+to_int
+
+Input: A string byte representing an 8-bit binary number (e.g., “11001010”).
+
+Output: The integer equivalent of the binary string.
+
+Initialization:
+result is initialized to 0.
+
+Loop:
+The loop iterates over each character in the string byte from index 0 to 7.
+For each character, it checks if the character represents the binary digit ‘1’ by comparing byte[i] - 48 to 1. This converts the ASCII value of the character to its integer equivalent (since ‘0’ has an ASCII value of 48 and ‘1’ has an ASCII value of 49).
+
+
+Calculation:
+
+If the character is ‘1’, it adds (2^i) to result using the pewpew function, which returns the power of 2 for the given index i.
+Return:
+The function returns the computed integer value stored in result.
+This function effectively converts a binary string to its decimal
+representation by summing the appropriate powers of 2 for each ‘1’ in the string.
+...............................................................................
+to_byte
+
+Input: An integer num.
+Output: A string result representing the 8-bit binary equivalent of num.
+
+Initialization:
+result is initialized to “00000000”.
+c (index for result) is initialized to 0.
+i (bit position) is initialized to 7.
+Loop:
+The loop continues until num becomes 0.
+In each iteration:
+n is set to (2^i) using the pewpew function.
+If num is greater than or equal to n, the corresponding bit in result is set to ‘1’,
+ and n is subtracted from num.
+
+Otherwise, the bit is set to ‘0’.
+i is decremented, and c is incremented.
+
+
+Reverse:
+After the loop, the reverse function is called to reverse the first 8 characters of result,
+ ensuring the correct binary
+ representation(because in this program i considered the index zero is the lower bit)
+
+
+Return:
+
+The function returns the final binary string result.
+This function effectively converts an integer to its binary form by iterating through each bit position,
+setting the appropriate bits, and then reversing the string to get the correct order.
+
+}3
+
+}1
